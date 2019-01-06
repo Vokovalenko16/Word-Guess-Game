@@ -24,7 +24,7 @@ header > p {
     color: white;
     font-size: 18px;
     position: absolute;
-    left: 1040px;
+    left: 1000px;
     top: 150px;
 }
 .image1 {
@@ -85,8 +85,9 @@ header > p {
     margin-top: 10px;
     font-size: 50px;
 }
-span{
+span.score{
     margin: 30px;
+    font-size: 80px;
 }
 
 .gamelabel{
@@ -96,4 +97,10 @@ span{
 }
 .Wins{
     color: white;
+}
+.current-word {
+    font-size: 46px;
+}
+.Letters-Used {
+    font-size: 46px;
 }

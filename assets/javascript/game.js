@@ -1,46 +1,81 @@
 // //Dom manipulation ------from HTML
-Guessedletters_div = document.querySelector(".letters-guessed");
-Curentword_div = document.querySelector(".current-word");
-Randomletter_div= document.getElementById("random-letter");
-Winnum_span = document.getElementById("winnumber");
-Attemptsnum_span = document.getElementById("attempts");
-Wins_div = document.querySelector(".Wins");
+let Guesses_left = 10;
+let Letters_correct = 0;
+let Guessedletters_div = document.querySelector(".Letters-Used");
+let Currentword_div = document.querySelector(".current-word");
+let Winnum_span = document.getElementById("winnumber");
+let Attemptsnum_span = document.getElementById("attempts");
 // //Dom manipulation ------from HTML 
 
 //--------------------------> Global Variables
 // //Make a word array for the game ------------->
-const Gamechoice = (['disco','hippie','afro'])
+const Gamechoice = (['disco','home','afro', 'ass'])
 //Chose the word randomly
 let Xnum = Math.floor(Math.random() * Gamechoice.length);
 let Chosenword = Gamechoice[Xnum];
 let Underscore = [];
-let Rightletter = [];
+let Rightletter = [];//new Array(Gamechoice.length);
 let Wrongletter = [];
 
 //--------------------------> Global Variables
 //make an underscore based on the length of word
 function generateUnderscore () {
-    for(x=0; x<Chosenword.length; x++) {
-        Underscore.push("_")
+    for(var x=0; x<Chosenword.length; x++) {
+        Underscore.push("_");
     }
    return Underscore;
 }
-console.log(generateUnderscore());
-
 //get users guess
-document.addEventListener('keypress', (Keyfunct));
-function Keyfunct () {
-    let keyword = String.fromCharCode(event.keyCode);
-    //correct letter
-    if (Chosenword.indexOf(keyword) > -1 ) {
-    //add right letter to array
-        Rightletter.push(keyword);
-    console.log(Rightletter);
-    // replacing letter with underscore
-    //adding wrong letter to the wrong letter array
-   
-    }}
-//check if the guess is right
+joinit();
+document.addEventListener('keypress', (Onkey)) 
 
-//if right push to right array
-//if wrong push to the wrong array
+function Onkey () {
+    let keyword = String.fromCharCode(event.keyCode);
+
+    if ((Rightletter.indexOf(keyword) > -1) || (Wrongletter.indexOf(keyword) > -1)) {
+        return ;
+    }
+
+    let idx = Chosenword.indexOf(keyword);
+    //correct letter
+    if (idx > -1 ) {
+        //add right letter to array
+
+        Rightletter.push(keyword)
+
+        for(var x=0; x<Chosenword.length; x++) {
+            if (Chosenword[x] == keyword) {
+                Underscore[x] = keyword;
+            }
+        }
+        // replacing letter with underscore
+        //adding wrong letter to the wrong letter array
+        Currentword_div.innerHTML = Underscore;
+        win();
+    }
+    else {
+        Wrongletter.push(keyword);
+        lose();
+    }
+};
+
+function win() {
+    Letters_correct++;
+    Winnum_span.innerHTML = Letters_correct;
+    if (Underscore.join('') == Chosenword) {
+        alert("winner.")
+    }
+}
+
+function joinit() {
+    Currentword_div.innerHTML = generateUnderscore()
+}
+
+function lose() {
+    Guesses_left--;
+    Attemptsnum_span.innerHTML = Guesses_left;
+    Guessedletters_div.innerHTML = Wrongletter;
+    if (Guesses_left === 0) {
+        alert("LOSER.")
+    }
+}
