@@ -11,11 +11,11 @@ let Attemptsnum_span = document.getElementById("attempts");
 // //Make a word array for the game ------------->
 const Gamechoice = (['disco','home','afro', 'ass'])
 //Chose the word randomly
-let Xnum = Math.floor(Math.random() * Gamechoice.length);
-let Chosenword = Gamechoice[Xnum];
-let Underscore = [];
-let Rightletter = [];//new Array(Gamechoice.length);
-let Wrongletter = [];
+var Xnum = Math.floor(Math.random() * Gamechoice.length);
+var Chosenword = Gamechoice[Xnum];
+var Underscore = [];
+var Rightletter = [];//new Array(Gamechoice.length);
+var Wrongletter = [];
 
 //--------------------------> Global Variables
 //make an underscore based on the length of word
@@ -33,7 +33,7 @@ function Onkey () {
     let keyword = String.fromCharCode(event.keyCode);
 
     if ((Rightletter.indexOf(keyword) > -1) || (Wrongletter.indexOf(keyword) > -1)) {
-        return ;
+      return;
     }
 
     let idx = Chosenword.indexOf(keyword);
@@ -52,6 +52,7 @@ function Onkey () {
         //adding wrong letter to the wrong letter array
         Currentword_div.innerHTML = Underscore;
         win();
+
     }
     else {
         Wrongletter.push(keyword);
@@ -63,9 +64,23 @@ function win() {
     Letters_correct++;
     Winnum_span.innerHTML = Letters_correct;
     if (Underscore.join('') == Chosenword) {
-        alert("winner.")
-    }
-}
+    setTimeout(function(){ 
+        alert("winner")
+        Xnum = Math.floor(Math.random() * Gamechoice.length);
+        Chosenword = Gamechoice[Xnum];
+        Underscore = [];
+        Rightletter = [];
+        Wrongletter = [];
+        Guesses_left = 10;
+        Letters_correct = 0;
+        generateUnderscore ();
+        Currentword_div.innerHTML = Underscore;
+        Attemptsnum_span.innerHTML = Guesses_left;
+        Winnum_span.innerHTML = Letters_correct;
+        Guessedletters_div.innerHTML = "";
+      }, 1000)
+  }
+};
 
 function joinit() {
     Currentword_div.innerHTML = generateUnderscore()
@@ -76,6 +91,19 @@ function lose() {
     Attemptsnum_span.innerHTML = Guesses_left;
     Guessedletters_div.innerHTML = Wrongletter;
     if (Guesses_left === 0) {
+        setTimeout(function(){ 
         alert("LOSER.")
-    }
-}
+        Xnum = Math.floor(Math.random() * Gamechoice.length);
+        Chosenword = Gamechoice[Xnum];
+        Underscore = [];
+        Rightletter = [];
+        Guesses_left = 10;
+        Letters_correct = 0;
+        Wrongletter = [];
+        generateUnderscore ()
+        Currentword_div.innerHTML = Underscore;
+        Attemptsnum_span.innerHTML =Guesses_left;
+        Winnum_span.innerHTML = Letters_correct;
+        Guessedletters_div.innerHTML = "";
+  }, 1000);
+}};
